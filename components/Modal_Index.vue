@@ -240,6 +240,10 @@ export default {
         var s52WeekLow = 0
         var s50DayAvg = 0
         var sAvgVolume = 0
+        var sAsk = 0
+        var sBid = 0
+        var sAskSize = 0
+        var sBidSize = 0
         var sCategory
         var sValue
         var sValuePt2
@@ -254,19 +258,24 @@ export default {
 
           if(ycommabuff.length > 1){
 
-          sCategory = ycommabuff[0]
-          sValue = ycommabuff[1]
-          if(sValue != undefined){sValue = sValue.replace("}","")}
-          if(sValue == undefined){sValue = ''}
-          //sValue = sValue.replace("}","")
+            sCategory = ycommabuff[0]
+            sValue = ycommabuff[1]
+            if(sValue != undefined){sValue = sValue.replace("}","")}
+            if(sValue == undefined){sValue = ''}
+            //sValue = sValue.replace("}","")
 
-          if(sCategory == "shortName"){sSection = sValue}
-          if(sCategory == "regularMarketPrice"){sSectionValue = sValue;}
-          if(sCategory == "fiftyTwoWeekHigh"){s52WeekHigh = sValue;}
-          if(sCategory == "fiftyTwoWeekLow"){s52WeekLow = sValue;}
-          if(sCategory == "fiftyDayAverage"){s50DayAvg = sValue;}
-          if(sCategory == "averageVolume"){sAvgVolume = sValue;}
-          if(sCategory == "quoteType"){sQuoteType = sValue; }
+            if(sCategory == "shortName"){sSection = sValue}
+            if(sCategory == "regularMarketPrice"){sSectionValue = sValue;}
+            if(sCategory == "fiftyTwoWeekHigh"){s52WeekHigh = sValue;}
+            if(sCategory == "fiftyTwoWeekLow"){s52WeekLow = sValue;}
+            if(sCategory == "fiftyDayAverage"){s50DayAvg = sValue;}
+            if(sCategory == "averageVolume"){sAvgVolume = sValue;}
+            if(sCategory == "quoteType"){sQuoteType = sValue; }
+
+            if(sCategory == "ask"){sAsk = sValue;}
+            if(sCategory == "bid"){sBid = sValue;}
+            if(sCategory == "askSize"){sAskSize = sValue;}
+            if(sCategory == "bidSize"){sBidSize = sValue;}
           }
         }
         
@@ -290,6 +299,11 @@ export default {
           if(sCategory == "regularMarketVolume"){sSectionVol = sValue;}
           if(sCategory == "regularMarketOpen"){sSectionOpen = sValue;}
 
+          if(sCategory == "ask"){sAsk = sValue;}
+          if(sCategory == "bid"){sBid = sValue;}
+          if(sCategory == "askSize"){sAskSize = sValue;}
+          if(sCategory == "bidSize"){sBidSize = sValue;}
+
           if(sCategory == "quoteType"){sQuoteType = sValue; }
           if(sCategory == "regularMarketTime"){
             sValuePt2 = commabuff[2]
@@ -302,6 +316,7 @@ export default {
         // if (parIndex == '^dji') {alert('array length: ' + parIndex + '|' + sSectionValue + '|' + sSectionHigh)}
         var sformat = '0,0.0'
         if(sQuoteType == 'CURRENCY'){sformat = '0,0.0000'}
+        if(sQuoteType == 'EQUITY'){sformat = '0,0.00'}
         var sValBuff = numeral(sSectionValue).format(sformat)
         
         //alert('array length: ' + arraylength)
@@ -315,10 +330,13 @@ export default {
         this.results.push({category: 'Volume' , value: numeral(sSectionVol).format('0,0')})
         this.results.push({category: 'Avg Volume' , value: numeral(sAvgVolume).format('0,0')})
         this.results.push({category: 'Market Time' , value: sSectionTime})
-        this.results.push({category: '52 Week High' , value: s52WeekHigh})
-        this.results.push({category: '52 Week Low' , value: s52WeekLow})
-        this.results.push({category: '50 Day Avg' , value: s50DayAvg})
-        this.results.push({category: 'Quote Type' , value: sQuoteType})
+        this.results.push({category: '52 Week High' , value: numeral(s52WeekHigh).format(sformat)})
+        this.results.push({category: '52 Week Low' , value: numeral(s52WeekLow).format(sformat)})
+        this.results.push({category: 'Bid' , value: numeral(sBid).format(sformat)})
+        this.results.push({category: 'Ask' , value: numeral(sAsk).format(sformat)})
+        this.results.push({category: 'Bid Size' , value: numeral(sBidSize).format('0,0')})
+        this.results.push({category: 'Ask Size' , value: numeral(sAskSize).format('0,0')})
+
         this.equityType = 0
         this.techType = 0
         this.ccyType = 0
@@ -516,7 +534,7 @@ axiosLoadHistorical (parIndex) {
                 <v-tab-item>
                   <v-card flat >
                     <v-flex xs9 md9 lg12 class="my-1">
-                      <v-data-table id="IndexTable_1" :headers="headers" :items="results" :items-per-page="12"npm hide-default-footer dense class="elevation-1 fixed-header"></v-data-table> 
+                      <v-data-table id="IndexTable_1" :headers="headers" :items="results" :items-per-page="13" hide-default-footer dense class="elevation-1 fixed-header"></v-data-table> 
                     </v-flex>   
                   </v-card>
                 </v-tab-item>

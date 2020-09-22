@@ -533,7 +533,7 @@ export default {
         this.getIntraDay ()
         }
 
-		    this.iCountdown = 60; 
+		    this.iCountdown = 30; 
 		    if(iDay == 0){this.iCountdown = 600; }
 		    if(iDay == 6){this.iCountdown = 600; }
 		    if(iDay > 0 && iDay < 6){
