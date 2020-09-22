@@ -529,9 +529,9 @@ export default {
 		    //console.log('Blastoff:' + this.iCountdown);
         
         if(this.isIndexVisible == false){
-        this.axiosAddUser()
-        this.getIntraDay ()
-        }
+          this.axiosAddUser()
+          this.getIntraDay ()
+          }
 
 		    this.iCountdown = 30; 
 		    if(iDay == 0){this.iCountdown = 600; }
